@@ -36,7 +36,7 @@ def createDataArrayAll(file):
 
 #start and end are integer values corresponding to the beginning and ending indexes
 
-#thresh is an integer corresponding to the threshold specified
+#thresh is an integer corresponding to the threshold specified for data
 
 #winL is an integer value corresponding to the number of samples in a row we check against the thresh predicate
 
@@ -76,11 +76,13 @@ def backSearchContinuityWithinRange(data, start, end, threshLo, threshHi, winL):
     return None
 
 
-#data is an array created with createDataArrayAll
+#data1 is one of seven arrays created with createDataArrayAll
+#data2 is one of seven arrays created with createDataArrayAll
 
 #start and end are integer values corresponding to the beginning and ending indexes
 
-#thresh is a reading object created with int.min for all values except the component being checked
+#thresh1 is is an integer value corresponding to the threshold specified for data 1
+#thresh2 is is an integer value corresponding to the threshold specified for data 2
 
 #winL is an integer value corresponding to the number of samples in a row we check against the thresh predicate
 
@@ -105,7 +107,7 @@ def searchContinuityAboveValueTwoSignals(data1, data2, start, end, thresh1, thre
 
 #threshHi is an integer value corresponding to the high end of the threshold
 
-#winL is an integer value corresponding to the number of samples in a row we check against the thresh predicate
+#winL is an integer value corresponding to the number of samples in a row we check against the thresh predicates
 
 def searchMultiContinuityWithinRange(data, start, end, threshLo, threshHi, winLength):
     currLength = 0
