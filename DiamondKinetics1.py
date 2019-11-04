@@ -34,11 +34,11 @@ def createDataArrayAll(file):
 
 #data is an array created with createDataArrayAll
 
-#start and end are integer values corresponding to the beginning and ending indexes
+#start and end are real number values corresponding to the beginning and ending indexes
 
-#thresh is an integer corresponding to the threshold specified for data
+#thresh is an real number corresponding to the threshold specified for data
 
-#winL is an integer value corresponding to the number of samples in a row we check against the thresh predicate
+#winL is an real number value corresponding to the number of samples in a row we check against the thresh predicate
 
 def searchContinuityAboveValue(data, start, end, thresh, winL):
     for i in range(start,end):
@@ -55,13 +55,13 @@ def searchContinuityAboveValue(data, start, end, thresh, winL):
 
 #data is one of the sesven arrays created in the createDataArrayAll function
 
-#start and end are integer values corresponding to the beginning and ending indexes
+#start and end are real number values corresponding to the beginning and ending indexes
 
-#threshLo is an integer value corresponding to the low end of the threshold
+#threshLo is an real number value corresponding to the low end of the threshold
 
-#threshHi is an integer value corresponding to the high end of the threshold
+#threshHi is an real number value corresponding to the high end of the threshold
 
-#winL is an integer value corresponding to the number of samples in a row we check against the thresh predicate
+#winL is an real number value corresponding to the number of samples in a row we check against the thresh predicate
 
 def backSearchContinuityWithinRange(data, start, end, threshLo, threshHi, winL):
     for i in range(start,end):
@@ -79,12 +79,12 @@ def backSearchContinuityWithinRange(data, start, end, threshLo, threshHi, winL):
 #data1 is one of seven arrays created with createDataArrayAll
 #data2 is one of seven arrays created with createDataArrayAll
 
-#start and end are integer values corresponding to the beginning and ending indexes
+#start and end are real number values corresponding to the beginning and ending indexes
 
-#thresh1 is is an integer value corresponding to the threshold specified for data 1
-#thresh2 is is an integer value corresponding to the threshold specified for data 2
+#thresh1 is is an real number value corresponding to the threshold specified for data 1
+#thresh2 is is an real number value corresponding to the threshold specified for data 2
 
-#winL is an integer value corresponding to the number of samples in a row we check against the thresh predicate
+#winL is an real number value corresponding to the number of samples in a row we check against the thresh predicate
 
 def searchContinuityAboveValueTwoSignals(data1, data2, start, end, thresh1, thresh2, winL):
     for i in range(start,end):
@@ -101,13 +101,13 @@ def searchContinuityAboveValueTwoSignals(data1, data2, start, end, thresh1, thre
 
 #data is an array created with createDataArrayAll
 
-#start and end are integer values corresponding to the beginning and ending indexes
+#start and end are real number values corresponding to the beginning and ending indexes
 
-#threshLo is an integer value corresponding to the low end of the threshold
+#threshLo is an real number value corresponding to the low end of the threshold
 
-#threshHi is an integer value corresponding to the high end of the threshold
+#threshHi is an real number value corresponding to the high end of the threshold
 
-#winL is an integer value corresponding to the number of samples in a row we check against the thresh predicates
+#winL is an real number value corresponding to the number of samples in a row we check against the thresh predicates
 
 def searchMultiContinuityWithinRange(data, start, end, threshLo, threshHi, winLength):
     currLength = 0
