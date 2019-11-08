@@ -40,39 +40,6 @@ def createDataArrayAll(file):
 
 #winL is an real number value corresponding to the number of samples in a row we check against the thresh predicate
 
-def helper (data, data2, start, end, threshLo, threshHi, threshLo2, winL):
-
-    if (threshLo2 == None) and (threshHi == None) and (data2 == None):
-        for i in range(start,end):
-            if data[i] > threshLo:
-                count += 1
-            if count == winL:
-                return i-winL+1
-            else:
-                count = 0
-        return None
-
-    if threshLo2 == None and data2 == None:
-        for i in range(start,end):
-            if data[i] > threshLo and data[i] < threshHi:
-                count += 1
-            if count == winL:
-                return i-winL+1
-            else:
-                count = 0
-        return None
-
-    if threshHi == None:
-        for i in range(start,end):
-            if data[i] > threshLo and data2[i] > threshLo2:
-                count += 1
-            if count == winL:
-                return i-winL+1
-            else:
-                count = 0
-        return None
-
-
 
 def searchContinuityAboveValue(data, start, end, thresh, winL):
     count = 0
