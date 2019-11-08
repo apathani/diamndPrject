@@ -40,20 +40,53 @@ def createDataArrayAll(file):
 
 #winL is an real number value corresponding to the number of samples in a row we check against the thresh predicate
 
+def helper (data, data2, start, end, threshLo, threshHi, threshLo2, winL):
+
+    if (threshLo2 == None) and (threshHi == None) and (data2 == None):
+        for i in range(start,end):
+            if data[i] > threshLo:
+                count += 1
+            if count == winL:
+                return i-winL+1
+            else:
+                count = 0
+        return None
+
+    if threshLo2 == None and data2 == None:
+        for i in range(start,end):
+            if data[i] > threshLo and data[i] < threshHi:
+                count += 1
+            if count == winL:
+                return i-winL+1
+            else:
+                count = 0
+        return None
+
+    if threshHi == None:
+        for i in range(start,end):
+            if data[i] > threshLo and data2[i] > threshLo2:
+                count += 1
+            if count == winL:
+                return i-winL+1
+            else:
+                count = 0
+        return None
+
+
+
 def searchContinuityAboveValue(data, start, end, thresh, winL):
+    count = 0
     for i in range(start,end):
         if data[i] > thresh:
-            satisfies = True
-            for j in  range(winL):
-                if data[i+j] <= thresh or (i+j>end):
-                    satisfies = False
-                    break
-            if satisfies:
-                return i
+            count += 1
+        else:
+            count = 0
+        if count == winL:
+            return i-winL+1
     return None
 
 
-#data is one of the sesven arrays created in the createDataArrayAll function
+#data is one of the seven arrays created in the createDataArrayAll function
 
 #start and end are real number values corresponding to the beginning and ending indexes
 
@@ -64,16 +97,16 @@ def searchContinuityAboveValue(data, start, end, thresh, winL):
 #winL is an real number value corresponding to the number of samples in a row we check against the thresh predicate
 
 def backSearchContinuityWithinRange(data, start, end, threshLo, threshHi, winL):
+    count = 0
     for i in range(start,end):
         if data[i] > threshLo and data[i] < threshHi:
-            satisfies = True
-            for j in  range(winL):
-                if data[i+j] <= threshLo or data[i+j] >= threshHi or (i+j>end):
-                    satisfies = False
-                    break
-            if satisfies:
-                return i
+            count += 1
+        else:
+            count = 0
+        if count == winL:
+            return i-winL+1
     return None
+
 
 
 #data1 is one of seven arrays created with createDataArrayAll
@@ -89,13 +122,11 @@ def backSearchContinuityWithinRange(data, start, end, threshLo, threshHi, winL):
 def searchContinuityAboveValueTwoSignals(data1, data2, start, end, thresh1, thresh2, winL):
     for i in range(start,end):
         if data1[i] > thresh1 and data2[i] > thresh2:
-            satisfies = True
-            for j in  range(winL):
-                if data1[i+j] <= thresh1 or data2[i+j] <= thresh2 or (i+j>end):
-                    satisfies = False
-                    break
-            if satisfies:
-                return i
+            count += 1
+        else:
+            count = 0
+        if count == winL:
+            return i-winL+1
     return None
 
 
@@ -110,22 +141,14 @@ def searchContinuityAboveValueTwoSignals(data1, data2, start, end, thresh1, thre
 #winL is an real number value corresponding to the number of samples in a row we check against the thresh predicates
 
 def searchMultiContinuityWithinRange(data, start, end, threshLo, threshHi, winLength):
-    currLength = 0
-    inSeq = False
-    startIndex = None
-    ans = []
-    for i in range(start,end):
-        inSeq = False
-        if data[i]>threshLo and data[i]<threshHi:
-           if startIndex == None:
-               startIndex = i
-           currLength+=1
-           inSeq = True
-        if inSeq == False and currLength !=0:
-            if currLength>=winLength:
-                ans.append((startIndex,i-1))
-            currLength = 0
-            startIndex = None
-    return ans
+    if start == end:
+        return []
+    else:
+        i = backSearchContinuityWithinRange(data, start, end, threshLo, threshHi, winLength)
+        if i == None:
+            return []
+        else:
+            return [(i,i+winLength-1)] + searchMultiContinuityWithinRange(data, start + winLength, end, threshLo,threshHi,winLength)
+
 
 
