@@ -3,15 +3,27 @@ import unittest
 
 
 class SwingData(object):
-    def __init__(self):
-        self.time = []
-        self.axs = []
-        self.ays = []
-        self.azs = []
-        self.wxs = []
-        self.wys = []
-        self.wzs = []
+    def __init__(self,time,ax,ay,az,wx,wy,wz):
+        self.time = time
+        self.axs = ax
+        self.ays = ay
+        self.azs = az
+        self.wxs = wx
+        self.wys = wy
+        self.wzs = wz
 
+    def Greater (self,other):
+        if self.axs > other.axs and self.ays > other.ays and self.axs > other.axs:
+            return self.wxs > other.wxs and self.wys > other.wys and self.wzs > other.wzs
+        else:
+            return False
+
+
+    def Less (self,other):
+        if self.axs < other.axs and self.ays < other.ays and self.axs < other.axs:
+            return self.wxs < other.wxs and self.wys < other.wys and self.wzs < other.wzs
+        else:
+            return False
 
 
 
@@ -20,36 +32,40 @@ class SwingData(object):
 def createDataArrayAll(file):
     with open(file) as csv_file:
         csv_reader = csv.reader(csv_file)
-        allData = SwingData()
+        allData = []
         for row in csv_reader:
-            allData.time += [row[0]]
-            allData.axs += [row[1]]
-            allData.ays += [row[2]]
-            allData.azs += [row[3]]
-            allData.wxs += [row[4]]
-            allData.wys += [row[5]]
-            allData.wzs += [row[6]]
+            new = SwingData(row[0],row[1],row[2],row[3],row[4],row[5],row[6])
+            allData = [new] + allData
         return allData
 
 
-#data is an array created with createDataArrayAll
+#data is an array of swingData objects created with createDataArrayAll
 
 #start and end are real number values corresponding to the beginning and ending indexes
 
-#thresh is an real number corresponding to the threshold specified for data
+#thresh is a swingData object with a boolean value for time that is true if searching above threshold and false if searching below.
 
 #winL is an real number value corresponding to the number of samples in a row we check against the thresh predicate
 
 
 def searchContinuityAboveValue(data, start, end, thresh, winL):
     count = 0
-    for i in range(start,end):
-        if data[i] > thresh:
-            count += 1
-        else:
-            count = 0
-        if count == winL:
-            return i-winL+1
+    if thresh.time == True:
+        for i in range(start,end):
+            if data[i].Greater(thresh):
+                count += 1
+            else:
+                count = 0
+            if count == winL:
+                return i-winL+1
+    else:
+        for i in range(start,end):
+            if data[i].Less(thresh):
+                count += 1
+            else:
+                count = 0
+            if count == winL:
+                return i-winL+1
     return None
 
 
@@ -57,21 +73,33 @@ def searchContinuityAboveValue(data, start, end, thresh, winL):
 
 #start and end are real number values corresponding to the beginning and ending indexes
 
-#threshLo is an real number value corresponding to the low end of the threshold
+#threshLo is a swingData object with a boolean value for time that is true if searching withinRange threshold and false if searching OutofRange.
 
-#threshHi is an real number value corresponding to the high end of the threshold
+#threshHi is a swingData object with a boolean value for time that is true if searching withinRange threshold and false if searching OutofRange.
 
 #winL is an real number value corresponding to the number of samples in a row we check against the thresh predicate
 
+###IMPORTANT : : : threshHi and threshLo must have matching boolean values : : : IMPORTANT#######
+
+
 def backSearchContinuityWithinRange(data, start, end, threshLo, threshHi, winL):
     count = 0
-    for i in range(start,end):
-        if data[i] > threshLo and data[i] < threshHi:
-            count += 1
-        else:
-            count = 0
-        if count == winL:
-            return i-winL+1
+    if (threshLo.time == True and threshHi.time == True):
+        for i in range(start,end):
+            if (data[i].Greater(threshLo) and data[i].Less(threshHi)):
+                count += 1
+            else:
+                count = 0
+            if count == winL:
+                return i-winL+1
+    else:
+        for i in range(start,end):
+            if (data[i].Less(threshLo) or data[i].Greater(threshHi)):
+                count += 1
+            else:
+                count = 0
+            if count == winL:
+                return i-winL+1
     return None
 
 
@@ -81,19 +109,31 @@ def backSearchContinuityWithinRange(data, start, end, threshLo, threshHi, winL):
 
 #start and end are real number values corresponding to the beginning and ending indexes
 
-#thresh1 is is an real number value corresponding to the threshold specified for data 1
-#thresh2 is is an real number value corresponding to the threshold specified for data 2
+#thresh1 is a swingData object with a boolean value for time that is true if searching above threshold and false if searching below.
+
+#thresh2 is a swingData object with a boolean value for time that is true if searching above threshold and false if searching below.
 
 #winL is an real number value corresponding to the number of samples in a row we check against the thresh predicate
 
 def searchContinuityAboveValueTwoSignals(data1, data2, start, end, thresh1, thresh2, winL):
-    for i in range(start,end):
-        if data1[i] > thresh1 and data2[i] > thresh2:
-            count += 1
-        else:
-            count = 0
-        if count == winL:
-            return i-winL+1
+    count = 0
+    if (thresh1.time == True and thresh2.time == True):
+        for i in range(start,end):
+            if data1[i].Greater(thresh1) and data2[i].Greater(thresh2):
+                count += 1
+            else:
+                count = 0
+            if count == winL:
+                return i-winL+1
+    else:
+        for i in range(start,end):
+            if data1[i].Less(thresh1) and data2[i].Less(thresh2):
+                count += 1
+            else:
+                count = 0
+            if count == winL:
+                return i-winL+1
+
     return None
 
 
@@ -101,11 +141,13 @@ def searchContinuityAboveValueTwoSignals(data1, data2, start, end, thresh1, thre
 
 #start and end are real number values corresponding to the beginning and ending indexes
 
-#threshLo is an real number value corresponding to the low end of the threshold
+#threshLo is a swingData object with a boolean value for time that is true if searching withinRange threshold and false if searching OutofRange.
 
-#threshHi is an real number value corresponding to the high end of the threshold
+#threshHi is a swingData object with a boolean value for time that is true if searching withinRange threshold and false if searching OutofRange.
 
 #winL is an real number value corresponding to the number of samples in a row we check against the thresh predicates
+
+###IMPORTANT : : : threshHi and threshLo must have matching boolean values : : : IMPORTANT#######
 
 def searchMultiContinuityWithinRange(data, start, end, threshLo, threshHi, winLength):
     if start == end:

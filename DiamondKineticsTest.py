@@ -49,5 +49,6 @@ class SimpleTestCase(unittest.TestCase):
 
 if __name__ == "__main__":
     data = DiamondKinetics1.createDataArrayAll("latestSwing.csv")
-    print(data.axs)
+    for i in range(len(data)):
+        print (data[i].axs)
     unittest.main()
