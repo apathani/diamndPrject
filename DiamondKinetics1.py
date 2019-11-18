@@ -72,7 +72,7 @@ def continuityHelper(data,data2,start,end,threshLo, threshHi, winL):
         return None
     else:
         for i in range(start,end):
-            if data[i].Greater(thresh1o) and data2[i].Greater(threshHi):
+            if data[i].Greater(threshLo) and data2[i].Greater(threshHi):
                 count += 1
             else:
                 count = 0

@@ -61,8 +61,10 @@ if __name__ == "__main__":
     print(DiamondKinetics1.backSearchContinuityWithinRange(data, start, end, threshLo, threshHi, winLength))
     assert threshLo.Less(threshHi)
     assert DiamondKinetics1.backSearchContinuityWithinRange(data, start, end, threshLo, threshHi, winLength) == 20
+    assert DiamondKinetics1.searchContinuityAboveValueTwoSignals(data1,data1, start, end, threshLo, threshLo, winLength) == 20
     print(DiamondKinetics1.searchMultiContinuityWithinRange(data1, start, end, threshLo, threshHi, winLength))
     assert DiamondKinetics1.searchMultiContinuityWithinRange(data1, start, end, threshLo, threshHi, winLength) == [(20,27)]
+
 
     threshLo = DiamondKinetics1.SwingData(float(-99999),float(0.55),float(-99999),float(-99999),float(-99999),float(-99999),float(-99999))
     threshHi = DiamondKinetics1.SwingData(float(99999),float(0),float(99999),float(99999),float(99999),float(99999),float(99999))
