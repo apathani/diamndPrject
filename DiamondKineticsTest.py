@@ -5,50 +5,83 @@ import DiamondKinetics1
 
 
 
+
 class SimpleTestCase(unittest.TestCase):
-    def testA(self):
-        data1 = [0,324,4235,6,6,6,100,7,7,8,10,3,7,7,324,1234,23,4,234,24332,412]
-        start = 2
-        end = 12
-        threshLo = 5
-        threshHi = 10
-        winLength = 3
+    def testA(self, data):
+        data1 = data
+        start = 0
+        end = 28
+        threshLo = DiamondKinetics1.SwingData(float(-99999),float(0),float(-99999),float(-99999),float(-99999),float(-99999),float(-99999))
+        threshHi = DiamondKinetics1.SwingData(float(99999),float(0.55),float(99999),float(99999),float(99999),float(99999),float(99999))
+        winLength = 8
         print(DiamondKinetics1.searchMultiContinuityWithinRange(data1, start, end, threshLo, threshHi, winLength))
-        assert DiamondKinetics1.searchMultiContinuityWithinRange(data1, start, end, threshLo, threshHi, winLength) == [(3,5),(7,9)]
+        assert DiamondKinetics1.searchMultiContinuityWithinRange(data1, start, end, threshLo, threshHi, winLength) == [(20,27)]
 
-    def testB(self):
-        data1 = [0,324,4235,6,6,6,100,7,7,8,10,3,7,7,324,1234,23,4,234,24332,412]
-        data2 = [0,324,1,1,1,1,100,7,7,8,10,3,7,7,324,1234,23,4,234,24332,412]
-        start = 2
-        end = 12
-        thresh1 = 5
-        thresh2 = 6
-        winLength = 3
+    def testB(self, data):
+        data1 = data
+        data2 = data
+        start = 0
+        end = 28
+        thresh1 = DiamondKinetics1.SwingData(-99999,0,-99999,-99999,-99999,-99999,-99999)
+        thresh2 = DiamondKinetics1.SwingData(-99999,0,-99999,-99999,-99999,-99999,-99999)
+        winLength = 8
         print(DiamondKinetics1.searchContinuityAboveValueTwoSignals(data1, data2, start, end, thresh1, thresh2, winLength))
-        assert DiamondKinetics1.searchContinuityAboveValueTwoSignals(data1, data2, start, end, thresh1, thresh2, winLength) == 6
+        assert DiamondKinetics1.searchContinuityAboveValueTwoSignals(data1, data2, start, end, thresh1, thresh2, winLength) == 20
 
-    def testC(self):
-        data = [0,324,4235,6,6,101,100,7,7,8,10,3,7,7,324,1234,23,4,234,24332,412]
-        start = 2
-        end = 12
-        threshLo = 5
-        threshHi = 100
-        winLength = 3
+    def testC(self, data):
+        data = data
+        start = 0
+        end = 28
+        threshLo = DiamondKinetics1.SwingData(float(-99999),float(0),float(-99999),float(-99999),float(-99999),float(-99999),float(-99999))
+        threshHi = DiamondKinetics1.SwingData(float(99999),float(0.55),float(99999),float(99999),float(99999),float(99999),float(99999))
+        winLength = 8
         print(DiamondKinetics1.backSearchContinuityWithinRange(data, start, end, threshLo, threshHi, winLength))
-        assert DiamondKinetics1.backSearchContinuityWithinRange(data, start, end, threshLo, threshHi, winLength) == 7
+        assert DiamondKinetics1.backSearchContinuityWithinRange(data, start, end, threshLo, threshHi, winLength) == 20
 
-    def testD(self):
-        data = [0,324,4235,6,6,101,100,7,7,8,10,3,7,7,324,1234,23,4,234,24332,412]
-        start = 2
-        end = 12
-        thresh= 5
+    def testD(self, data):
+        data = data
+        start = 0
+        end = 28
+        threshLo = DiamondKinetics1.SwingData(float(-99999),float(0),float(-99999),float(-99999),float(-99999),float(-99999),float(-99999))
         winLength = 3
         print(DiamondKinetics1.searchContinuityAboveValue(data, start, end, thresh, winLength))
-        assert DiamondKinetics1.searchContinuityAboveValue(data, start, end, thresh, winLength) == 2
+        assert DiamondKinetics1.searchContinuityAboveValue(data, start, end, thresh, winLength) == 20
 
 
 if __name__ == "__main__":
     data = DiamondKinetics1.createDataArrayAll("latestSwing.csv")
     for i in range(len(data)):
         print (data[i].axs)
-    unittest.main()
+    data1 = data
+    start = 0
+    end = 28
+    threshLo = DiamondKinetics1.SwingData(float(-99999),float(0),float(-99999),float(-99999),float(-99999),float(-99999),float(-99999))
+    threshHi = DiamondKinetics1.SwingData(float(99999),float(0.55),float(99999),float(99999),float(99999),float(99999),float(99999))
+    winLength = 8
+    print(DiamondKinetics1.backSearchContinuityWithinRange(data, start, end, threshLo, threshHi, winLength))
+    assert threshLo.Less(threshHi)
+    assert DiamondKinetics1.backSearchContinuityWithinRange(data, start, end, threshLo, threshHi, winLength) == 20
+    print(DiamondKinetics1.searchMultiContinuityWithinRange(data1, start, end, threshLo, threshHi, winLength))
+    assert DiamondKinetics1.searchMultiContinuityWithinRange(data1, start, end, threshLo, threshHi, winLength) == [(20,27)]
+
+    threshLo = DiamondKinetics1.SwingData(float(-99999),float(0.55),float(-99999),float(-99999),float(-99999),float(-99999),float(-99999))
+    threshHi = DiamondKinetics1.SwingData(float(99999),float(0),float(99999),float(99999),float(99999),float(99999),float(99999))
+    print(DiamondKinetics1.searchMultiContinuityWithinRange(data1, start, end, threshLo, threshHi, 5))
+    assert (DiamondKinetics1.backSearchContinuityWithinRange(data1, start, end, threshLo, threshHi, 5) == 0)
+    assert DiamondKinetics1.searchMultiContinuityWithinRange(data1, start, end, threshLo, threshHi, 5) == [(0,4), (5,9), (10,14),(15,19)]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
